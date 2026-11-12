@@ -153,14 +153,26 @@ const KEY='iron-mode-3-visual-test', $=id=>document.getElementById(id), clone=x=
 const makeEx=(name,sets=3,reps=10,rest=90,bw=false)=>({id:'e'+Math.random().toString(36).slice(2),name,sets,reps,rest,bw,notes:'',rows:Array.from({length:sets},()=>({done:false,weight:'',reps:String(reps)}))});
 function fresh(){return {version:3,days:[{id:'monday',name:'Программа A',subtitle:'Спина · Грудь · Бицепс',exercises:BASE.map(a=>makeEx(...a))},{id:'program-b',name:'Программа B',subtitle:'Ноги · Плечи · Трицепс',exercises:[makeEx('Приседания',4,10,150),makeEx('Жим ногами',3,12,120),makeEx('Жим гантелей сидя',3,10,120),makeEx('Разведения гантелей',3,12,90),makeEx('Трицепс на блоке',3,12,90)]},{id:'program-c',name:'Программа C',subtitle:'Своя программа',exercises:[]}],day:'monday',active:0,bodyWeight:82,history:[],session:{status:'idle',accumulated:0,startedAt:null},pullBaseline:6}};
 function valid(s){return s&&Array.isArray(s.days)&&s.days.length&&s.days.every(d=>d&&typeof d.id==='string'&&Array.isArray(d.exercises)&&d.exercises.every(e=>e&&Array.isArray(e.rows)))&&Array.isArray(s.history)&&s.session&&['idle','running','paused'].includes(s.session.status)}
-let state;try{state=JSON.parse(localStorage.getItem(KEY));if(!valid(state))throw Error('invalid')}catch{state=fresh()}
+// Keep the storage key stable across all future releases. Never silently erase a saved plan.
+const SAFETY_KEY=KEY+'-safety';
+let state,storageWarning='';
+try{
+ const primary=localStorage.getItem(KEY),safety=localStorage.getItem(SAFETY_KEY);
+ if(primary){const parsed=JSON.parse(primary);if(!valid(parsed))throw Error('invalid primary');state=parsed;}
+ else if(safety){const parsed=JSON.parse(safety);if(!valid(parsed))throw Error('invalid safety');state=parsed;storageWarning='Данные восстановлены из защитной копии.';}
+ else state=fresh();
+}catch(e){
+ try{const recovered=JSON.parse(localStorage.getItem(SAFETY_KEY));if(!valid(recovered))throw Error('invalid safety');state=recovered;storageWarning='Основные данные повреждены. Восстановлена защитная копия.';}
+ catch{state=fresh();storageWarning='Не удалось прочитать сохранённые данные. Не меняй программы — сначала восстанови резервную копию через Настройки.';}
+}
+let STORAGE_LOCKED=storageWarning.startsWith('Не удалось');
 let screen='workout',timerRunning=false,timerDeadline=0,timerLeft=180,timerInterval=null,restTotal=180,restExerciseName='';
 const day=()=>state.days.find(d=>d.id===state.day)||state.days[0],exs=()=>day().exercises,cur=()=>exs()[state.active],num=v=>Number.isFinite(Number(v))?Math.max(0,Number(v)):0;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>{n=Math.max(0,Math.floor(n));return [Math.floor(n/3600),Math.floor(n%3600/60),n%60].map(x=>String(x).padStart(2,'0')).join(':')};
 const mmss=n=>{n=Math.max(0,Math.ceil(n));return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`};
 function toast(s){$('toast').textContent=s;$('toast').style.display='block';clearTimeout(toast.timeout);toast.timeout=setTimeout(()=>$('toast').style.display='none',2400)}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast('Не удалось сохранить. Экспортируй данные!')}}
+function save(){if(STORAGE_LOCKED){toast('Сохранение заблокировано: восстанови резервную копию');return;}try{const data=JSON.stringify(state);localStorage.setItem(KEY,data);localStorage.setItem(SAFETY_KEY,data)}catch(e){toast('Не удалось сохранить. Экспортируй данные!')}}
 function elapsed(){let s=state.session;return s.accumulated+(s.status==='running'?Math.max(0,Date.now()-s.startedAt):0)}
 function totals(d=day()){let sets=d.exercises.flatMap(e=>e.rows),done=sets.filter(r=>r.done).length,volume=0,free=0,body=0;d.exercises.forEach(e=>e.rows.forEach(r=>{if(!r.done)return;let v=(num(r.weight)+(e.bw?num(state.bodyWeight):0))*num(r.reps);volume+=v;if(e.bw)body+=v;else free+=v}));return {sets:sets.length,done,volume,free,body,pct:sets.length?Math.round(done/sets.length*100):0}}
 function renderHero(){let d=day(),t=totals();$('dayTitle').textContent=d.name.toLocaleUpperCase('ru-RU');$('subtitle').textContent=d.subtitle||'Моя тренировка';$('exCount').textContent=d.exercises.length;$('setCount').textContent=t.done+' / '+t.sets;$('volume').textContent=Math.round(t.volume).toLocaleString('ru-RU')+' кг';$('percent').textContent=t.pct+'%';$('progressFill').style.width=t.pct+'%';$('elapsed').textContent=fmt(elapsed()/1000);$('dashboard').classList.toggle('hidden',screen!=='workout');$('exerciseLabel').textContent=d.exercises.length+' упражнений';$('bodyWeight').value=state.bodyWeight;let status=state.session.status;$('sessionStatus').textContent=({idle:'НЕ НАЧАТА',running:'ИДЁТ',paused:'ПАУЗА'})[status];$('startSession').textContent=status==='idle'?'▶ Начать':'▶ Продолжить';$('startSession').disabled=status==='running';$('pauseSession').disabled=status!=='running';$('finishSession').disabled=status==='idle'}
@@ -285,7 +297,7 @@ $('historyList').onclick=e=>{let del=e.target.closest('[data-removehistory]');if
 function report(){let t=totals();return `IRON MODE — ${day().name}\nДлительность: ${fmt(elapsed()/1000)}\nТоннаж: ${Math.round(t.volume)} кг\nПодходы: ${t.done}/${t.sets}\n\n`+exs().map(e=>`${e.name}\n${e.rows.map((r,j)=>`${r.done?'✓':'○'} ${j+1}: ${r.weight||0} кг × ${r.reps}`).join('\n')}\nЗаметки: ${e.notes||'—'}`).join('\n\n')}
 $('copySession').onclick=async()=>{try{await navigator.clipboard.writeText(report());toast('Результаты скопированы')}catch(e){let blob=new Blob([report()],{type:'text/plain'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='iron-mode-training.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000)}};
 $('exportBtn').onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='iron-mode-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);toast('Резервная копия подготовлена')};
-$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let s=JSON.parse(await f.text());if(!valid(s))throw Error('Неверный формат');if(!confirm('Заменить текущие данные резервной копией?'))return;state=s;state.day=state.days.some(d=>d.id===state.day)?state.day:state.days[0].id;state.active=0;expandedExercise=0;save();resetRest();renderExercises();view('workout');toast('Данные восстановлены')}catch(err){toast('Ошибка файла резервной копии')}e.target.value=''};
+$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let s=JSON.parse(await f.text());if(!valid(s))throw Error('Неверный формат');if(!confirm('Заменить текущие данные резервной копией?'))return;state=s;STORAGE_LOCKED=false;storageWarning='';state.day=state.days.some(d=>d.id===state.day)?state.day:state.days[0].id;state.active=0;expandedExercise=0;save();resetRest();renderExercises();view('workout');toast('Данные восстановлены')}catch(err){toast('Ошибка файла резервной копии')}e.target.value=''};
 $('resetCurrent').onclick=()=>{if(!confirm('Очистить отметки и заметки текущего дня? История сохранится.'))return;day().exercises.forEach(e=>{e.rows.forEach(r=>r.done=false);e.notes=''});state.session={status:'idle',accumulated:0,startedAt:null};save();renderExercises();toast('Текущая тренировка очищена')};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(timerRunning)restTick();renderHero()}});setInterval(()=>{if(state.session.status==='running')renderHero()},1000);renderExercises();renderHero();
 
@@ -306,4 +318,5 @@ document.querySelectorAll('[data-period]').forEach(b=>b.onclick=()=>{document.qu
 
 // initialize screen and chooser
 renderHero();
+if(storageWarning)setTimeout(()=>alert(storageWarning),250);
 </script></body></html>
