@@ -142,6 +142,99 @@ body[data-screen]:not([data-screen="workout"]) .screen.active{padding-top:5px}
 .exercise .previous-set small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
 .exercise .previous-set b{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media(max-width:350px){.exercise .previous-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* DIARY REFERENCE DESIGN — only history screen; all other screens unchanged */
+#historyScreen>.panel{background:#0b0e0c;border:1px solid #262e28;border-radius:20px;padding:15px 12px}
+#historyScreen .eyebrow{font-size:11px;letter-spacing:2px}
+#historyScreen h2{font-size:24px;letter-spacing:-.6px;margin:7px 0 13px;font-weight:850}
+#historyScreen .cal-box{background:#0b0e0c;border:1px solid #313b33;border-radius:16px;padding:9px 10px 12px;margin:12px 0}
+#historyScreen .cal-head{margin-bottom:6px}
+#historyScreen .cal-head strong{font-size:17px;font-weight:850}
+#historyScreen .cal-arrow{height:35px;width:35px;background:#151a17;color:white;border:1px solid #313b33}
+#historyScreen .cal-grid{gap:0}
+#historyScreen .cal-week{padding:7px 0 6px;font-size:11px;color:#b5bab5}
+#historyScreen .cal-day{height:34px;border-radius:9px;font-size:13px}
+#historyScreen .cal-day.outside{color:#515952}
+#historyScreen .cal-day.selected{background:var(--lime);color:#0a0e08}
+#historyScreen .cal-day .cal-dot{bottom:1px;width:4px;height:4px}
+#historyScreen .historyitem{margin:11px 0 22px;padding:0;border:0}
+#historyScreen .diary-head{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#222824,#141815);padding:12px 10px;border-radius:14px;margin-bottom:12px;min-width:0}
+#historyScreen .diary-date-icon{color:var(--lime);font-size:25px;line-height:1}
+#historyScreen .diary-date{flex:1;min-width:0}
+#historyScreen .diary-date b{display:block;font-size:15px;font-weight:850}
+#historyScreen .diary-date small{display:block;color:#c1c7c1;font-size:11px;margin-top:5px;overflow-wrap:anywhere}
+#historyScreen .diary-time{color:var(--lime);background:#0a0e0b;border:1px solid #2e3a2e;border-radius:14px;padding:8px;font-weight:850;font-size:13px;white-space:nowrap}
+#historyScreen .diary-overview{display:grid;grid-template-columns:1fr 1.1fr 1.1fr;gap:8px;align-items:stretch;margin:12px 0}
+#historyScreen .diary-ring{--p:0;width:110px;height:110px;max-width:100%;aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--lime) calc(var(--p)*1%),#343d36 0);display:grid;place-items:center;margin:auto}
+#historyScreen .diary-ring-inside{width:84%;height:84%;border-radius:50%;background:#0b0e0c;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#historyScreen .diary-ring-inside b{font-size:16px;white-space:nowrap}
+#historyScreen .diary-ring-inside em{color:var(--lime);font-style:normal}
+#historyScreen .diary-ring-inside small{font-size:10px}
+#historyScreen .diary-bigstat{background:linear-gradient(145deg,#1f2520,#151a16);border:1px solid #303932;border-radius:14px;padding:13px 9px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+#historyScreen .diary-bigstat small{font-size:10px;color:#d2d7d2}
+#historyScreen .diary-bigstat b{font-size:23px;color:var(--lime);margin-top:10px;white-space:nowrap}
+#historyScreen .diary-exercises{display:grid;gap:8px}
+#historyScreen .diary-ex{background:linear-gradient(145deg,#1c221e,#141916);border:1px solid #28322b;border-radius:13px;overflow:hidden}
+#historyScreen .diary-ex>summary{display:flex;align-items:center;gap:11px;padding:12px 11px;list-style:none;cursor:pointer}
+#historyScreen .diary-ex>summary::-webkit-details-marker{display:none}
+#historyScreen .diary-ex-num{font-size:24px;color:var(--lime);font-weight:850;border-right:1px solid var(--lime);padding-right:11px}
+#historyScreen .diary-ex-title{flex:1;min-width:0}
+#historyScreen .diary-ex-title b{display:block;font-size:16px}
+#historyScreen .diary-ex-title small{display:block;color:#b7beb8;font-size:11px;margin-top:3px}
+#historyScreen .diary-chevron{font-size:23px;transform:rotate(0deg);transition:transform .2s}
+#historyScreen .diary-ex[open] .diary-chevron{transform:rotate(180deg)}
+#historyScreen .diary-ex-body{padding:0 10px 11px}
+#historyScreen .diary-table{width:100%;border-collapse:collapse;background:#0b0f0c;border:1px solid #303932;border-radius:11px;overflow:hidden;font-variant-numeric:tabular-nums}
+#historyScreen .diary-table th{color:#c5cbc5;font-size:11px;font-weight:500;text-align:center;padding:9px 3px;border-bottom:1px solid #2d352e}
+#historyScreen .diary-table td{font-size:15px;font-weight:750;text-align:center;padding:7px 3px;border-bottom:1px solid #2d352e}
+#historyScreen .diary-table tr:last-child td{border-bottom:0}
+#historyScreen .diary-table td:first-child,#historyScreen .diary-table th:first-child{width:37px}
+#historyScreen .diary-check{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:50%;font-size:15px;color:#a5b1a6}
+#historyScreen .diary-check.yes{background:var(--lime);color:#111;font-weight:900}
+#historyScreen .diary-note{background:#252f1b;border:1px solid #5b7a1d;border-radius:11px;padding:10px;margin-top:10px;font-size:12px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+#historyScreen .diary-note b{display:block;color:var(--lime);font-size:13px;margin-bottom:6px}
+#historyScreen .diary-footer{margin:12px 0;color:#a8b1a9;font-size:11px}
+#historyScreen .diary-footer .btn{display:block;width:100%;margin-top:10px}
+@media(max-width:370px){#historyScreen .diary-ring{width:93px;height:93px}#historyScreen .diary-bigstat{padding:9px 6px}#historyScreen .diary-bigstat b{font-size:19px}#historyScreen .diary-time{font-size:11px;padding:7px 5px}}
+
+/* REFERENCE ICON AND RING PRECISION */
+#historyScreen .diary-date-icon{display:flex;align-items:center;justify-content:center;flex:none;color:var(--lime)}
+#historyScreen .diary-stat-icon{display:inline-flex;vertical-align:middle;align-items:center;margin-right:7px;color:var(--lime)}
+#historyScreen .diary-bigstat small{display:flex;align-items:center;white-space:nowrap}
+#historyScreen .diary-check.yes{width:22px;height:22px;background:var(--lime);color:#0b1006}
+#historyScreen .diary-check.yes svg{display:block}
+
+/* Exact-reference proportions: three equal cards, slimmer progress ring, tighter diary */
+#historyScreen .diary-overview{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:9px 0}
+#historyScreen .diary-ring-card{min-width:0;background:linear-gradient(145deg,#1f2520,#151a16);border:1px solid #29332b;border-radius:13px;display:flex;align-items:center;justify-content:center;padding:7px 3px}
+#historyScreen .diary-ring{width:80px;height:80px;max-width:100%;aspect-ratio:1;margin:auto}
+#historyScreen .diary-ring-inside{width:83%;height:83%;background:#151a16}
+#historyScreen .diary-ring-inside b{font-size:15px}
+#historyScreen .diary-ring-inside small{font-size:9px}
+#historyScreen .diary-bigstat{padding:9px 8px;min-height:96px;border-radius:13px}
+#historyScreen .diary-bigstat small{font-size:10px;gap:3px}
+#historyScreen .diary-bigstat b{font-size:21px;margin-top:9px}
+#historyScreen .diary-stat-icon svg{width:16px;height:16px}
+#historyScreen .diary-head{padding:9px 10px;margin-bottom:9px}
+#historyScreen .diary-date b{font-size:15px}
+#historyScreen .diary-date small{font-size:10px}
+#historyScreen .diary-ex>summary{padding:10px 11px}
+#historyScreen .diary-table td{padding:5px 3px}
+#historyScreen .diary-check{width:21px;height:21px}
+#historyScreen .diary-check.yes svg{width:14px;height:14px}
+#historyScreen .cal-day{height:31px}
+#historyScreen .cal-box{margin-bottom:10px}
+@media(max-width:370px){#historyScreen .diary-ring{width:72px;height:72px}#historyScreen .diary-bigstat b{font-size:18px}#historyScreen .diary-bigstat small{font-size:9px}}
+
+/* Performance Pro — only the diary; hidden if no comparable prior result exists */
+#historyScreen .diary-performance{margin:12px 0 13px;padding:13px;background:linear-gradient(125deg,#15200e,#0c130c);border:1px solid #526d19;border-radius:14px}
+#historyScreen .diary-performance-heading{font-size:13px;font-weight:850;color:var(--lime);margin-bottom:11px;letter-spacing:.15px;overflow-wrap:anywhere}
+#historyScreen .diary-performance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+#historyScreen .diary-performance-grid>div{background:#0b110b;border-radius:10px;padding:11px 8px;min-width:0}
+#historyScreen .diary-performance-grid small{display:block;color:#aab5a7;font-size:10px;line-height:1.25;min-height:26px}
+#historyScreen .diary-performance-grid b{display:block;color:var(--lime);font-size:16px;margin-top:7px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#historyScreen .diary-performance-grid b.negative{color:#ff9b8e}
+@media(max-width:370px){#historyScreen .diary-performance-grid b{font-size:13px}#historyScreen .diary-performance-grid>div{padding:9px 5px}}
 </style></head><body><main>
 <section class="panel hero"><div class="top"><div><div class="eyebrow">IRON MODE / DARK PRO</div><div class="muted" style="margin-top:5px">WORKOUT TRACKER 3.0</div></div><button class="dumbbell" id="menuBtn" aria-label="Открыть меню" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11M3 8l5-5M16 21l5-5M2 11l9-9M13 22l9-9"/></svg></button></div><section class="panel menu" id="menu"><button class="btn" data-screen="settings">⚙ Настройки и резервные копии</button></section><div class="program-chooser" id="programChooser"><div class="eyebrow">ВЫБЕРИ ПРОГРАММУ</div><div id="programCards" class="program-cards"></div><button class="btn primary launch" id="quickStart">▶ НАЧАТЬ ТРЕНИРОВКУ</button><div class="navtiles"><button data-go="editor">✎<small>Редактор<br>программ</small></button><button data-go="history">▥<small>Дневник</small></button><button data-go="records">♜<small>Рекорды</small></button><button data-go="stats">↗<small>Статистика</small></button></div><div class="last-workout" id="lastWorkout">ПОСЛЕДНЯЯ ТРЕНИРОВКА <span id="lastWorkoutInfo">Пока нет записей</span></div></div><h1 id="dayTitle">ПРОГРАММА A</h1><div class="muted" id="subtitle">Спина · Грудь · Бицепс</div><div id="dashboard"><div class="metrics"><div class="metric"><small>◷ ДЛИТЕЛЬНОСТЬ</small><strong id="elapsed">00:00:00</strong></div><div class="metric"><small>▰ ТОННАЖ</small><strong class="lime" id="volume">0 кг</strong></div><div class="metric"><small>УПРАЖНЕНИЙ</small><strong id="exCount">7</strong></div><div class="metric"><small>ПОДХОДОВ</small><strong id="setCount">0 / 24</strong></div></div><div class="between" style="margin-bottom:8px"><span class="muted">Прогресс тренировки</span><b class="lime" id="percent">0%</b></div><div class="bar"><div id="progressFill"></div></div></div></section>
 
@@ -265,12 +358,36 @@ function renderEditor(){renderDays();$('editorList').innerHTML=exs().map((e,i)=>
 
 let historyMonth=new Date(),historySelected=null;
 function historyKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+// Performance Pro: compare the heaviest completed set with the latest earlier session
+// containing the same exercise name, regardless of program. No ID linking.
+function diaryPerformance(session){
+ const exercises=Array.isArray(session.exercises)?session.exercises:[];
+ const currentTime=new Date(session.endedAt).getTime();
+ if(!Number.isFinite(currentTime))return '';
+ const prior=state.history.filter(h=>h&&h!==session&&Array.isArray(h.exercises)&&Number.isFinite(new Date(h.endedAt).getTime())&&new Date(h.endedAt).getTime()<currentTime).sort((a,b)=>new Date(b.endedAt)-new Date(a.endedAt));
+ for(const exercise of exercises){
+  const name=String(exercise.name||'').trim().toLocaleLowerCase('ru-RU');
+  const currentRows=(exercise.rows||[]).filter(r=>r.done&&r.weight!==''&&Number.isFinite(Number(r.weight)));
+  if(!name||!currentRows.length)continue;
+  const currentMax=Math.max(...currentRows.map(r=>Number(r.weight)));
+  for(const h of prior){
+   const previous=(h.exercises||[]).find(e=>String(e.name||'').trim().toLocaleLowerCase('ru-RU')===name);
+   if(!previous)continue;
+   const oldRows=(previous.rows||[]).filter(r=>r.done&&r.weight!==''&&Number.isFinite(Number(r.weight)));
+   if(!oldRows.length)continue;
+   const oldMax=Math.max(...oldRows.map(r=>Number(r.weight)));
+   const delta=currentMax-oldMax;
+   const fmtWeight=n=>n.toLocaleString('ru-RU',{maximumFractionDigits:2})+' кг';
+   const change=(delta>0?'+':'')+fmtWeight(delta);
+   return `<div class="diary-performance"><div class="diary-performance-heading">↗ ПРОГРЕСС · ${esc(exercise.name.toLocaleUpperCase('ru-RU'))}</div><div class="diary-performance-grid"><div><small>Прошлый максимум</small><b>${fmtWeight(oldMax)}</b></div><div><small>Сейчас</small><b>${fmtWeight(currentMax)}</b></div><div><small>Изменение</small><b class="${delta<0?'negative':''}">${change} ${delta>0?'↑':delta<0?'↓':'='}</b></div></div></div>`;
+  }
+ }
+ return '';
+}
 function renderHistory(){
  const validHistory=state.history.filter(s=>s&&s.endedAt&&!Number.isNaN(new Date(s.endedAt).getTime()));
  if(!historySelected&&validHistory.length){const latest=new Date(validHistory[0].endedAt);historySelected=historyKey(latest);historyMonth=new Date(latest.getFullYear(),latest.getMonth(),1)}
- const y=historyMonth.getFullYear(),m=historyMonth.getMonth();
- const first=(new Date(y,m,1).getDay()+6)%7;
- const days=new Date(y,m+1,0).getDate();
+ const y=historyMonth.getFullYear(),m=historyMonth.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();
  const marks=new Set(validHistory.map(s=>historyKey(new Date(s.endedAt))));
  let cells=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(w=>`<span class="cal-week">${w}</span>`).join('');
  for(let i=0;i<Math.ceil((first+days)/7)*7;i++){
@@ -286,12 +403,10 @@ function renderHistory(){
   const pct=total?Math.round(done/total*100):0;
   const date=new Date(s.endedAt).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
   const subtitle=s.daySubtitle||state.days.find(d=>d.id===s.dayId)?.subtitle||'';
-  return `<div class="historyitem"><details class="hist-session" open>
-   <summary><div class="hist-session-top"><b>${esc(s.dayName)}${subtitle?`<span class="hist-subtitle">${esc(subtitle)}</span>`:''}</b><span class="pill">${esc(date)}</span></div><div class="hist-session-info"><span>${fmt(num(s.durationMs)/1000)} · ${done} / ${total} подходов</span><strong>${Math.round(num(s.volume)).toLocaleString('ru-RU')} кг</strong></div></summary>
-   <div class="hist-content"><div class="hist-overview"><div class="hist-ring" style="--p:${pct}"><div class="hist-ring-inner"><b>${done} / ${total}</b><small>подходов</small></div></div><div class="hist-stats"><div class="hist-stat"><span>◷ Длительность</span><strong>${fmt(num(s.durationMs)/1000)}</strong></div><div class="hist-stat"><span>▰ Тоннаж</span><strong>${Math.round(num(s.volume)).toLocaleString('ru-RU')} кг</strong></div><div class="hist-stat"><span>▥ Упражнений</span><strong>${exercises.length}</strong></div></div></div>
-   ${exercises.map((x,ei)=>{const rows=Array.isArray(x.rows)?x.rows:[],completed=rows.filter(r=>r.done).length;return `<details class="hist-ex" ${ei===0?'open':''}><summary><span class="lime">▣</span><span class="hist-exname">${esc(x.name)}</span><span class="hist-count">${completed} / ${rows.length}</span><span class="hist-chevron">⌄</span></summary><div class="hist-sets">${rows.map((r,j)=>`<div class="hist-set ${r.done?'done':''}"><div class="mark">${r.done?'✓':'○'} ${j+1}</div><b>${esc(r.weight||'0')} кг</b><small>× ${esc(r.reps)}</small></div>`).join('')}</div>${x.notes?`<div class="hist-notes"><b>▤ Заметки</b>${esc(x.notes)}</div>`:''}</details>`}).join('')}
-   <div class="hint">Свободные веса: ${Math.round(num(s.free))} кг · с собственным весом: ${Math.round(num(s.body))} кг</div>
-   <div class="hist-actions"><button class="btn danger" data-removehistory="${index}">Удалить запись</button></div></div></details></div>`;
+  return `<div class="historyitem"><div class="diary-head"><div class="diary-date-icon"><svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/><path d="M7 14h2M12 14h2M7 18h2"/></svg></div><div class="diary-date"><b>${esc(date)}</b><small>${esc(s.dayName)}${subtitle?' · '+esc(subtitle):''}</small></div><span class="diary-time">◴ ${fmt(num(s.durationMs)/1000)}</span></div>
+   <div class="diary-overview"><div class="diary-ring-card"><div class="diary-ring" style="--p:${pct}"><div class="diary-ring-inside"><b><em>${done}</em> / ${total}</b><small>подходов</small></div></div></div><div class="diary-bigstat"><small><span class="diary-stat-icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6.5 6.5 11 11M3 8l5-5M16 21l5-5M2 11l9-9M13 22l9-9"/></svg></span>Упражнений</small><b>${exercises.length}</b></div><div class="diary-bigstat"><small><span class="diary-stat-icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7a3 3 0 0 1 6 0"/><path d="M7 8h10l3 12H4L7 8Z"/><path d="M12 12v4"/></svg></span>Тоннаж</small><b>${Math.round(num(s.volume)).toLocaleString('ru-RU')} кг</b></div></div>
+   ${diaryPerformance(s)}<div class="diary-exercises">${exercises.map((x,ei)=>{const rows=Array.isArray(x.rows)?x.rows:[];return `<details class="diary-ex" ${ei===0?'open':''}><summary><span class="diary-ex-num">${String(ei+1).padStart(2,'0')}</span><span class="diary-ex-title"><b>${esc(x.name)}</b><small>${rows.length} ${rows.length===1?'подход':'подхода'}</small></span><span class="diary-chevron">⌄</span></summary><div class="diary-ex-body"><table class="diary-table"><thead><tr><th>◉</th><th>Подход</th><th>Вес, кг</th><th>Повторения</th></tr></thead><tbody>${rows.map((r,j)=>`<tr><td><span class="diary-check ${r.done?'yes':''}">${r.done?'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':'○'}</span></td><td>${j+1}</td><td>${esc(r.weight||'0')}</td><td>${esc(r.reps||'0')}</td></tr>`).join('')}</tbody></table>${x.notes?`<div class="diary-note"><b>▤ &nbsp; Заметка</b><div>${esc(x.notes)}</div></div>`:''}</div></details>`}).join('')}</div>
+   <div class="diary-footer"><span>Свободные веса: ${Math.round(num(s.free))} кг · с собственным весом: ${Math.round(num(s.body))} кг</span><button class="btn danger" data-removehistory="${index}">Удалить запись</button></div></div>`;
  }).join(''):'<p class="muted">На выбранную дату тренировок нет. Выбери день с зелёной отметкой.</p>';
 }
 $('historyCalendar').addEventListener('click',e=>{
